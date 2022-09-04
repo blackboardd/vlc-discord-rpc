@@ -37,7 +37,10 @@ if (!(config.rpc.detached || process.argv.includes('detached'))) {
 		}
 	}
   const command = config.vlcPath || platformDefaults[process.platform] || 'vlc';
-  const child = spawn(command, ['--extraintf', 'http', '--http-host', config.vlc.address, '--http-password', config.vlc.password, '--http-port', config.vlc.port]);
+  const host = config.vlc.address.split(':')[1].replace('//', '');
+  const port = config.vlc.address.split(':')[2];
+  console.log({ host, port });
+  const child = spawn(command, ['--extraintf', 'http', '--http-host', host, '--http-password', config.vlc.password, '--http-port', port]);
   child.on('exit', () => {
   	console.log("VLC closed; Exiting.");
     process.exit(0);
